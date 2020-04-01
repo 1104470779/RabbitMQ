@@ -12,7 +12,10 @@ import java.util.concurrent.TimeoutException;
 
 public class Consumer {
 
-	
+	private static String exchangeName = "test_confirm_exchange";
+	private static String routingKey = "confirm.#";
+	private static String queueName = "test_confirm_queue";
+
 	public static void main(String[] args) throws Exception {
 		consumer();
 	}
@@ -26,16 +29,13 @@ public class Consumer {
 		Connection connection = connectionFactory.newConnection();
 		Channel channel = connection.createChannel();
 
-		String exchangeName = "test_confirm_exchange";
-		String routingKey = "confirm.#";
-		String queueName = "test_confirm_queue";
-
 		//声明交换机和队列 然后进行绑定设置, 最后制定路由Key
 		channel.exchangeDeclare(exchangeName, "topic", true);
 		channel.queueDeclare(queueName, true, false, false, null);
 		channel.queueBind(queueName, exchangeName, routingKey);
 
 		QueueingConsumer queueingConsumer = new QueueingConsumer(channel);
+		//autoAck自动签收
 		channel.basicConsume(queueName, true, queueingConsumer);
 
 		while(true){
