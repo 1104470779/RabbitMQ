@@ -34,19 +34,25 @@ public class Producer {
 		//确认监听
 		channel.addConfirmListener(new ConfirmListener() {
 			/**
-			 *
+			 *	确认（成功）
 			 * @param deliveryTag 消息唯一标签
 			 * @param multiple
 			 * @throws IOException
 			 */
 			@Override
 			public void handleAck(long deliveryTag, boolean multiple) throws IOException {
-				System.out.println("no ack");
+				System.out.println("ack");
 			}
 
+			/**
+			 * 非确认（失败）
+			 * @param deliveryTag
+			 * @param multiple
+			 * @throws IOException
+			 */
 			@Override
 			public void handleNack(long deliveryTag, boolean multiple) throws IOException {
-				System.out.println("ack");
+				System.out.println("nack");
 			}
 		});
 	}
