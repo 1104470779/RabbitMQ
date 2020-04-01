@@ -2,6 +2,7 @@ package com.ljm.returnlistener;
 
 import java.io.IOException;
 
+import com.ljm.Global;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -16,8 +17,8 @@ public class Producer {
 		
 		
 		ConnectionFactory connectionFactory = new ConnectionFactory();
-		connectionFactory.setHost("192.168.11.76");
-		connectionFactory.setPort(5672);
+		connectionFactory.setHost(Global.HOST);
+		connectionFactory.setPort(Global.PORT);
 		connectionFactory.setVirtualHost("/");
 		
 		Connection connection = connectionFactory.newConnection();

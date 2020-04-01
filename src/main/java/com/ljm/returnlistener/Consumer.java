@@ -1,5 +1,6 @@
 package com.ljm.returnlistener;
 
+import com.ljm.Global;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -13,8 +14,8 @@ public class Consumer {
 		
 		
 		ConnectionFactory connectionFactory = new ConnectionFactory();
-		connectionFactory.setHost("192.168.11.76");
-		connectionFactory.setPort(5672);
+		connectionFactory.setHost(Global.HOST);
+		connectionFactory.setPort(Global.PORT);
 		connectionFactory.setVirtualHost("/");
 		
 		Connection connection = connectionFactory.newConnection();
