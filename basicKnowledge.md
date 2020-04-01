@@ -32,3 +32,4 @@ Exchange 和Queue的绑定可以是多对多的关系。
 
 ### Broker
 表示消息队列服务器实体
+
