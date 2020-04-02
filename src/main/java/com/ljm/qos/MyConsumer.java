@@ -24,7 +24,7 @@ public class MyConsumer extends DefaultConsumer {
 		System.err.println("envelope: " + envelope);
 		System.err.println("properties: " + properties);
 		System.err.println("body: " + new String(body));
-		
+		//手动签收 指定消息tag
 		channel.basicAck(envelope.getDeliveryTag(), false);
 		
 	}

@@ -20,7 +20,7 @@ public class MyConsumer extends DefaultConsumer {
 	/**
 	 *
 	 * @param consumerTag 消费标签
-	 * @param envelope
+	 * @param envelope 关键信息
 	 * @param properties
 	 * @param body
 	 * @throws IOException
