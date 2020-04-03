@@ -1,6 +1,9 @@
 package com.ljm.api.confirm;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.concurrent.TimeoutException;
 
 import com.ljm.Global;
@@ -30,6 +33,7 @@ public class Producer {
 		String msg="hello word confirm";
 		//发送
 		channel.basicPublish(exchangeName,routingKey,null,msg.getBytes());
+		SortedSet<Long> confirmSet = Collections.synchronizedSortedSet(new TreeSet<Long>());
 		//确认监听
 		channel.addConfirmListener(new ConfirmListener() {
 			/**
@@ -41,6 +45,11 @@ public class Producer {
 			@Override
 			public void handleAck(long deliveryTag, boolean multiple) throws IOException {
 				System.out.println("ack");
+				if (multiple) {
+					confirmSet.headSet(deliveryTag + 1L).clear();
+				} else {
+					confirmSet.remove(deliveryTag);
+				}
 			}
 
 			/**
