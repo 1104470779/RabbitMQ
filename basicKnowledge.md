@@ -81,3 +81,23 @@ Exchange 和Queue的绑定可以是多对多的关系。
 （6）关闭信道。
 
 （7）关闭连接。
+## 三.rabbitmq消息处理方式及备份交换机
+
+### 1. rabbitmq对于没有匹配到的消息的处理方式：
+
+#### mandatory
+
+mandatory为true时， 交换机无法根据自身的类型和路由键等条件依据规则找到一个符合条件队列， 那么rabbitmq会调用basic.return 命令将消息返回给生产者。 如果为false， 则将消息直接丢弃
+
+#### immediate
+
+立即， 实时， 该参数为true时， 若rabbitmq路由消息的时候，发现队列上没有消费者，那么rabbitmq将不会将消息投递到消息队列中，而是将消息返回给生产者， 因为没有消费者，那么消息也就不能进入队列被立即处理了
+
+（immediate参数在rabbitmq 3.0版本开始不再支持，1.是影响镜像队列性能2.增加复杂性，等等，建议使用TTL/DLX）
+
+### 二. 备份交换机（alternate exchange） 
+简称AE, 在mandatory中 如果不设置，则会丢消息，如果不丢消息，则需要在客户端天津returnlistener的处理过程，监听失败的消息， 如果不丢消息，又不增加处理程序的复杂性，可以使用备份交换机， 将未被路由的消息存放在rabbitmq中， 需要的时候再处理它
+
+实现方法， 在建立channel后， 声明注册exchange交换机的时候， 添加 alternate-exchange参数进行实现， 也可以使用策略policy进行实现， 两个同时使用，则alternate-exchange参数优先级更高
+
+消息被发送到备份交换机的路由键与生产者发出的路由键是一样的， 因此备份交换机的类型一般设置为fanout类型（广播）， 如果设置为direct（一对一）的时候，如果备份交换机也没有对应的bindingkey匹配到队列，那么消息会处理失败
