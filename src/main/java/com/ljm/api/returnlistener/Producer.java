@@ -4,10 +4,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 import com.ljm.Global;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.ReturnListener;
+import com.rabbitmq.client.*;
 import com.rabbitmq.client.AMQP.BasicProperties;
 
 public class Producer {
@@ -32,6 +29,13 @@ public class Producer {
 		Channel channel = connection.createChannel();
 
 		String msg = "Hello RabbitMQ Return Message";
+		addReturnListener(channel);
+		//handleReturn 必须设置 mandatory=true
+		channel.basicPublish(exchange, routingKeyError, true, null, msg.getBytes());
+	}
+
+
+	private static void addReturnListener(Channel channel) {
 		channel.addReturnListener(new ReturnListener() {
 			//不可达消息处理
 
@@ -57,7 +61,5 @@ public class Producer {
 				System.err.println("body: " + new String(body));
 			}
 		});
-		//handleReturn 必须设置 mandatory=true
-		channel.basicPublish(exchange, routingKeyError, true, null, msg.getBytes());
 	}
 }

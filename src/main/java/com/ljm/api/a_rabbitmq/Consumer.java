@@ -38,7 +38,7 @@ public class Consumer {
         Connection connection = connectionFactory.newConnection();
         //创建信道
         Channel channel = connection.createChannel();
-        //声明队列
+        //声明队列  持久  非排他 非自动删除
         channel.queueDeclare(queue, true, false, false, null);
         //创建消费者
         QueueingConsumer consumer = new QueueingConsumer(channel);

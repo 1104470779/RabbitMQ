@@ -20,6 +20,14 @@ public class MyConsumer extends DefaultConsumer {
 		this.channel = channel;
 	}
 
+	/**
+	 *
+	 * @param consumerTag
+	 * @param envelope
+	 * @param properties
+	 * @param body
+	 * @throws IOException
+	 */
 	@Override
 	public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
 		System.err.println("-----------consume message----------");
@@ -30,7 +38,9 @@ public class MyConsumer extends DefaultConsumer {
 			e.printStackTrace();
 		}
 		if((Integer)properties.getHeaders().get("num") == 0) {
-			//重回队列  失败的时候requeue设置true
+			//重回队列  失败的时候requeue设置true  mulitple设置为false，表示拒绝envelope.getDeliveryTag()这条消息
+			//如果设置为true，则表示envelope.getDeliveryTag()编号之前所有未被当前消费者确认的消息
+			//requeue设置false可以启动死信队列
 			channel.basicNack(envelope.getDeliveryTag(), false, true);
 		} else {
 			channel.basicAck(envelope.getDeliveryTag(), false);

@@ -9,6 +9,10 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
+/**
+ * 当mandatory设置true，交换机无法找到符合队列时，会调用basic.Rrturn命令将消息返回给生产者
+ * 当设置成false时，消息被直接丢弃
+ */
 public class Producer {
 
 	

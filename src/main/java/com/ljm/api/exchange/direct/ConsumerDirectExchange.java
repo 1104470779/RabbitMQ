@@ -37,12 +37,14 @@ public class ConsumerDirectExchange {
         //创建连接
         Connection connection = connectionFactory.newConnection();
         Channel channel = connection.createChannel();
-        //表示声明了一个交换机
+
+        //表示声明了一个交换机 交换机名称 类型 是否持久化  是否自动删除 是否是内置的 结构化参数
         channel.exchangeDeclare(exchangeName, exchangeType, true, false, false, null);
-        //表示声明了一个队列
+        //表示声明了一个队列  队列名称 是否持久化 是否排他 是否自动删除
         channel.queueDeclare(queueName, false, false, false, null);
         //建立一个绑定关系:
         channel.queueBind(queueName, exchangeName, routingKey);
+
         QueueingConsumer consumer = new QueueingConsumer(channel);
         //参数：队列名称、是否自动ACK、Consumer
         channel.basicConsume(queueName, true, consumer);

@@ -12,7 +12,7 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
 /**
- * message设置
+ * message属性设置
  */
 public class Procuder {
 
@@ -37,7 +37,7 @@ public class Procuder {
         Map<String, Object> headers = new HashMap<>();
         headers.put("my1", "111");
         headers.put("my2", "222");
-
+        //消息的基本属性集
         AMQP.BasicProperties properties = new AMQP.BasicProperties.Builder()
                 .deliveryMode(2)
                 .contentEncoding("UTF-8")
