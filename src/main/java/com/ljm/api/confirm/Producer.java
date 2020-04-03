@@ -61,6 +61,11 @@ public class Producer {
 			@Override
 			public void handleNack(long deliveryTag, boolean multiple) throws IOException {
 				System.out.println("nack");
+				if (multiple) {
+					confirmSet.headSet(deliveryTag + 1L).clear();
+				} else {
+					confirmSet.remove(deliveryTag);
+				}
 			}
 		});
 	}
