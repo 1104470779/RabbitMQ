@@ -41,7 +41,7 @@ public class Procuder {
         AMQP.BasicProperties properties = new AMQP.BasicProperties.Builder()
                 .deliveryMode(2)
                 .contentEncoding("UTF-8")
-                .expiration("10000")
+                .expiration("10000")    //对消息设置过期时间
                 .headers(headers)
                 .build();
         channel.basicPublish("", "test-001", properties, msg.getBytes());
